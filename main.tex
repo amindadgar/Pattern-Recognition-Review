@@ -1,0 +1,237 @@
+\documentclass{article}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+
+\title{Pattern-Recognition-Review}
+\author{Mohammad Amin Dadgar}
+\date{January 2022}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+
+\section{Introduction}
+This paper is the overview of what the Isfahan university students did in their pattern recognition review group. 
+
+
+\section{Session 1}
+In this session we are going to review the first 3 slides of professor Adibi. This session's objectives are:
+\begin{itemize}
+    \item What is pattern recognition? challenges in pattern recognition
+    \item How a model works to classify data?
+    \item Preprocess data, training, evaluation, feature extraction, feature selection, Risk of wrong classification. overfitting, 
+    \item An overview prior probability, pre- and post probability, bayes theorem, Expected value, variance and covariance
+    \item Gaussian distribution, whitening transformation
+\end{itemize}
+
+
+\subsection{Additional Questions}
+\subsubsection{Question 1}
+\textbf{Question:} \\
+A classification example was introduced in the course to separate salmon from
+seabass. In a similar manner, briefly introduce your ideas about the following
+problems for a three-class pattern classification problem on fruits with banana,
+orange, and yellow apple as classes: (a) the sensor or sensors to be used, (b) pre-
+processing problem, (c) segmentation problem, (d) features that can separate these
+three classes. \\ 
+\textbf{Answer:} \\
+\textit{(a)} A set of sensors such as color, shape, fruit skin type can be used. \\
+\textit{(b)}  After reading data from the sensors, they maybe noisy or have missing values or we need to create a new feature combining two features. \\
+\textit{(c)} having two features shape and color can separate these fruits well.
+
+\subsubsection{Question 2}
+\textbf{Question:} \\
+For a pattern classification problem with two classes, where each class has a
+Gaussian density function, the obtained decision boundary can sometimes be
+expressed based on a linear discriminant function. What condition must be satisfied
+for this case? Briefly explain. \\
+\textbf{Answer:} \\
+See the first and second state for Discriminant Gaussian Function. \\
+\textit{first state:} having a same variance for all data and uncorrelated features. \\
+\textit{second state:} Or having the same covariance matrix for all classes.
+
+
+\section{Session 2}
+In this section we are going to explain the below methods:
+\begin{itemize}
+    \item Bayesian Decision rule
+    \item Maximum Likelihood estimation (ML), Maximum a Posterior estimation (MAP)
+    \item Bayesian estimation
+\end{itemize}
+
+\subsection{Bayesian Decision rule}
+To explain the Bayes Decision rule we need to first know what is the loss function and the conditional risk.
+\subsubsection{Loss function}
+Loss function can be defined as, The loss that the system need to tolerate when it apply action $\alpha_i$ for class $\omega_j$. We can show the loss function as $\lambda(\alpha_i | \omega_j)$ and for abbreviation form we represent it as $\lambda_{ij}$. \\
+\textbf{Note:} We can say that error is a general form of loss function, that the loss function for correct classification ($\lambda{ij}$ for $i=j$) is zero.
+
+\subsubsection{Conditional Risk}
+Conditional risk represent the all loss functions for applying an action for all classes.
+\begin{equation} \label{eq:risk}
+    R(\alpha_i | x) = \sum_{j=1}^{c} \lambda_{ij} p(\omega_j | x) 
+\end{equation}
+the equation (\ref{eq:risk}), we can say that the risk doing the action $\alpha_i$, is applying the loss function to each posterior probability.
+
+\subsubsection{Bayesian Decision Rule}
+ In Bayes Decision rule we are comparing the conditional risk for every action. We can say that
+ \begin{equation}
+     Decide \; \omega_1 \; if R(\alpha_1 | x) < R(\alpha_2 | x) \; otherwise \; \omega_2  
+ \end{equation}
+
+\subsection{Maximum Likelihood (ML)}
+Maximum likelihood is a parametric method used to find the best parameter for data distribution. As it is transparent from the name of the method we are going to maximize the likelihood probability of a function. The equation below is to find the maximum likelihood of a probability.
+
+\begin{equation} \label{eq:ML}
+    p(D|\theta) = argmax \; \prod_{i=1}^{n} p(x_i | \theta)
+\end{equation}
+To maximize the equation above we can find the derivative of $p(D|\theta)$ with respect to $\theta$ and make it equal to zero.\\
+\textbf{Note:} We can apply the logarithm function to the equation (\ref{eq:ML}) to make the product as summation.
+
+\subsection{Maximum Posterior (MAP)}
+Maximum posterior is the same as maximum likelihood, but the difference here is we are going to maximize the posterior probability.
+\begin{equation}
+    p(\theta | D) = argmax \; \prod_{i=1}^{n} p(\theta | x_i)
+\end{equation}
+And using the Bayes rule we can expand the equation above as
+\begin{equation}
+    p(\theta | D) = argmax \; \prod_{i=1}^{n} p(x_i | \theta) p(\theta)
+\end{equation}
+\textbf{Note:} Again, we can apply the logarithm function to the equation (2) or (3) to make the product as summation.
+
+\subsection{Bayes estimation}
+In methods such as ML and MAP we were finding a value to maximize a parameter, but in Bayes estimation we are going to find a distribution for the requested parameter. \\
+The steps for Bayes estimation is as below \\
+\textit{Step 1:} find the posterior $p(\theta | D)$ as
+\begin{equation}
+    p(\theta | D) = \frac{p(D|\theta) p(\theta)}{p(D)} = a \prod_{i=1}^{k}p(x_k | \theta) p(\theta)
+\end{equation}
+
+\textit{Step 2:} find $p(x | D)$ as
+\begin{equation}
+    p(x|D) = \int p(x|\theta) p(\theta | D) d\theta
+\end{equation}
+\textit{Step 3:} substitute $p(x | D)$ with $p(x|\omega_i, D_i)$ in Bayes rule
+\begin{equation}
+    p(\omega_i| x,D_i) = \frac{p(x|\omega_i, D_i) p(\omega_i)}{ \sum_{j} p(x|\omega_j, D_j) p(\omega_j) }
+\end{equation}
+
+\section{Session 3}
+In this session we are going to explain two dimension reduction methods PCA and LDA.
+
+\subsection{PCA}
+One method to reduce dimensions is Principal Component Analysis or in the abbreviation form PCA. As it is clear from the name of this method we can compute the Principal Components of the data and removing some components will reduce our feature space size. So to have a better view of how this is working we can say that in PCA method we are computing the eigen-vectors of data covariance matrix and removing the eigen-vectors with the lowest eigen-values. The steps below shows how this method works. \\
+\textit{step 1:} Compute the mean of sample data
+\begin{equation}
+    \bar{x} = \frac{1}{N} \sum_{i=1}^{M} x_i
+\end{equation}
+\textit{step 2:} Normalize the data
+\begin{equation}
+    \phi_i = \frac{x_i - \bar{x} }{\sigma} 
+\end{equation}
+\textit{step 3:} Find the covariance matrix using $A=[\phi_1, ..., \phi_M]$
+\begin{equation}
+    C = \frac{1}{M} \sum_{1}^{M} \phi_i \phi_i^t = \frac{1}{M} AA^t
+\end{equation}
+\textit{step 4:} Find eigen-values and eigen-vectors of the covariance matrix \\
+\textit{step 5:} Sort eigen-vectors with the order of eigen-vectors descending
+\begin{equation}
+    \lambda_1 > \lambda_2 > ... > \lambda_N
+\end{equation}
+u are the eigen-vectors corresponding to each eigen-value
+\begin{equation}
+        u_1, u_2, ..., u_n
+\end{equation}
+\textit{step 6:} After finding the eigen-vectors we can represent data using eigen-vectors as the basis set
+\begin{equation}
+    \phi_i = b_1 u_1 + b_2 u_2 + ... + b_N u_N
+\end{equation}
+And the coefficients $b_i$ can be calculated as (Note that we also normalize the results)
+\begin{equation}
+    b_i = \frac{u_i^t \phi_i}{u_i^t u_i}
+\end{equation}
+\textit{step 7 (last step):} Dimension reduction, we can reduce dimensions using the eigen-vectors correspond to the biggest eigen-values
+\begin{equation}
+    \hat{\phi} = \sum_{i=1}^{K} b_i u_i \; \; \; K << N
+\end{equation}
+\par
+So the important thing here is how to choose K. To choose K it's important to keep in mind that the sum of K sorted eigen-values in respect to all need to be more than a threshold (0.9 or 0.95). meaning the equation below
+\begin{equation}
+    \frac{\sum_{i=1}^{K} \lambda_i}{ \sum_{i=1}^{N} \lambda_i} > Threshold
+\end{equation}
+
+\subsection{LDA \protect\footnote[1]{Linear Discriminate Analysis (Fisher's method)} }
+The method PCA was for unsupervised dimension reduction, but to be able to reduce the dimensions with respect to labels (Aka supervised) There is another method named Linear Discriminant Analysis or LDA in abbreviation form. This method tries to reduce the dimension with respect to minimizing the within-class variation and maximizing the between class variation. Some references name this method as fisher's method. \par
+To introduce LDA we need to first get to know what is within-class variation and between-class variation. 
+\subsubsection{Within-Class variation}
+Within-class variation can be defined as 
+\begin{equation}
+    S_w = \sum_{i=1}^{C} \sum_{j=1}^{M_i} (x_j - \mu_i)(x_j - \mu_i)^T
+\end{equation}
+\subsubsection{Between-Class variation}
+between-class variation can be defined as
+\begin{equation}
+    S_b = \sum_{i=1}^{C} (\mu_i - \mu) (\mu_i - \mu)^T
+\end{equation}
+Note that $\mu$ is the mean of entire dataset.
+
+\subsubsection{LDA}
+So now the definition of LDA is clear that the it tries to maximize the between class variation and tries to minimize the within-class variation. Think of the optimal projection is $y=U^T x$, then we can say maximizing the equation below would satisfy the goal
+\begin{equation}
+    J(U) = Tr\{S_w S_b^T\} = Tr\{U^T S_w U)^{-1} (U^T S_b U)\}
+\end{equation}
+\textbf{Note:} Because rank of the $S_b$ matrix is $C-1$, the maximum feature space must be $C-1$, and in another way we can say $K \leq C-1$.   \\
+In this Session some python code was included.
+
+\section{Session 4}
+In this session we are going to explain Support vector machines (SVM). Support vector machines are used to minimize a function named empirical risk. think of the the discriminant function we had earlier, if we define our data label as $z$, the equation below is the empirical risk
+\begin{equation}
+    R_{emp}(w, w_0) = \frac{1}{n} \sum_{k=1}^{n} [z_k - g(x_k, w, w_0)]^2
+\end{equation}
+if the empirical risk was zero we had a great classification just on training set, but for test set the accuracy may be low and we can say that the model does not have a good generalization (chance of overfitting). \par
+So we need another method to be the flipped version of the empirical risk. We use VC dimension to achieve our goal. To explain the VC dimension briefly, it can be said that for a count of lines how many points can be always divided. For example think of a linear line, it's clear that the maximum point that can be divided with this line is 3 ( Any order of data in 1 dimension ), So we can call a one linear line VC dimension as 3.
+
+There are two types of Support Vector Machines, the linearly separable and the one for non-linearly separable data.
+\subsection{SVM: linearly-separable data}
+One type of SVM is the SVM that can separate the linearly separable data. the function that shows the separation line is 
+\begin{equation} \label{eq:SVM-linear-equation}
+    g(x) = w^t x + w_0
+\end{equation}
+\begin{center}
+    \footnotesize{Decide $\omega_1$ if $g(x) > 0$ and if $g(x) < 0$ $\omega_2$}
+\end{center}
+To find the answers for separation line margin ($\omega$), we need to calculate these equations 
+\begin{equation} \label{eq:SVM-separable}
+    \nabla_{\lambda} (\sum_{i=0}^{n} \lambda_i + \sum_{i,k = 0}^{n} \lambda_i \lambda_k z_i z_k x_i^t x_k) = 0
+\end{equation}
+And in equation (\ref{eq:SVM-separable}), z is the label for data and lambda are the Lagrangian coefficients. To find w and $w_0$ in equation (\ref{eq:SVM-linear-equation}), we can use these equations below
+\begin{equation}
+    w = \sum_{k=1}^{n} \lambda_k z_k x_k
+\end{equation}
+\begin{equation}
+    w_0 = z_k - w^t x_k \; \; \; (This\:is \: just \: a \: change \: in \: eq.\ref{eq:SVM-linear-equation})
+\end{equation}
+\begin{equation}
+    0 \leq \lambda_i, \; k = 1,2,...,n    
+\end{equation}
+
+\textbf{Note:} The non-support vectors Lagrangian coefficient is zero. \par
+If we define an error tolerant for some points to be on the wrong side of decision boundary it will be appear in Lagrangian coefficients limitation.
+\begin{equation}
+       0 \leq \lambda_i \leq c, \; k = 1,2,...,n
+\end{equation}
+
+\subsection{SVM: non-linearly separable data}
+What if our data was not linearly separable? \\ To find a solution we need to increase the dimension. The reason behind this is when we increase the dimension the data become more sparse and a linear hyperplain can separate the data. \par
+To increase the data dimension a method is made to make the calculations easier. The method is called Kernel functions. A kernel function can get the inner product of data in much more easier manner. The kernel function must match the mercers condition. \par
+\textbf{Kernel Function:} The kernel function can be any combination of input vectors. A simple type of kernel function can be seen below
+\begin{equation}
+    K(x,y) = (x.y)^d
+\end{equation} \par
+\textbf{Mercer Condition:} Mercers condition nature is an integral but in our work we can say that as below \\
+\textit{Step 1:} For the data we have find the Gram-matrix (We will call the matrix A)\\
+\textit{Step 2:} Show that the matrix is positive semi-definite (PSD), by showing the eigen-values are semi-positive ($\geq 0$), and $ A A^T = I$.
+\end{document}
