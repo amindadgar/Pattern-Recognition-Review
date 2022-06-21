@@ -207,7 +207,7 @@ One type of SVM is the SVM that can separate the linearly separable data. the fu
 \end{center}
 To find the answers for separation line margin ($\omega$), we need to calculate these equations 
 \begin{equation} \label{eq:SVM-separable}
-    \nabla_{\lambda} (\sum_{i=0}^{n} \lambda_i + \sum_{i,k = 0}^{n} \lambda_i \lambda_k z_i z_k x_i^t x_k) = 0
+    \nabla_{\lambda} (\sum_{i=0}^{n} \lambda_i - \frac{1}{2} \sum_{i,k = 0}^{n} \lambda_i \lambda_k z_i z_k x_i^t x_k) = 0
 \end{equation}
 And in equation (\ref{eq:SVM-separable}), z is the label for data and lambda are the Lagrangian coefficients. To find w and $w_0$ in equation (\ref{eq:SVM-linear-equation}), we can use these equations below
 \begin{equation}
